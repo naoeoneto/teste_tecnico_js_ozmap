@@ -6,42 +6,40 @@ const service = new UserService(new InMemoryUserRepository());
 class UserController {
   static async createUser(ctx) {
     const data = ctx.request.body;
-    const user = await service.createUser(data);
+    const [status, user] = await service.createUser(data);
 
     if (!user) {
       ctx.throw(401);
     } else {
-      ctx.status = 201;
+      ctx.status = status;
       ctx.body = user;
     }
   }
 
   static async readAll(ctx) {
-    ctx.status = 200;
-    ctx.body = await service.readAll();
+    const [status, users] = await service.readAll();
+    ctx.status = status;
+    ctx.body = users;
   }
 
   static async readOne(ctx) {
     const userId = +ctx.params.id;
-    const user = await service.readUser(userId);
+    const [status, user] = await service.readUser(userId);
+    console.log(status, user);
 
-    if (!user) {
-      ctx.throw(404, "Usuário não encontrado");
-    } else {
-      ctx.status = 200;
-      ctx.body = user;
-    }
+    ctx.status = status;
+    ctx.body = user;
   }
 
   static async updateUser(ctx) {
     const userId = +ctx.params.id;
     const data = ctx.request.body;
-    const user = await service.updateUser(userId, data);
+    const [status, user] = await service.updateUser(userId, data);
 
     if (!user) {
-      ctx.throw(404, "Usuário não encontrado");
+      ctx.throw(404, "User not found");
     } else {
-      ctx.status = 200;
+      ctx.status = status;
       ctx.body = user;
     }
   }
@@ -51,11 +49,11 @@ class UserController {
     const user = await service.readUser(userId);
 
     if (!user) {
-      ctx.throw(404, "Usuário não encontrado");
+      ctx.throw(404, "User not found");
     } else {
-      await service.deleteUser(userId);
-      ctx.status = 204;
-      ctx.body = user;
+      const [status, message] = await service.deleteUser(userId);
+      ctx.status = status;
+      ctx.body = { message: message };
     }
   }
 }
