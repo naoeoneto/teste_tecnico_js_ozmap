@@ -30,7 +30,6 @@
     "chai-http": "^4.3.0",
     "chai-json-schema": "^1.5.1",
     "mocha": "^10.2.0",
-    "nodemon": "^2.0.22",
-    "sucrase": "^3.32.0"
+    "nodemon": "^2.0.22"
   }
 }

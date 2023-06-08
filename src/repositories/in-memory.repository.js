@@ -18,8 +18,8 @@ class InMemoryUserRepository {
       throw new Error("Nome, email e idade são campos obrigatórios");
     }
 
-    data.id = this._nextId;
-    this._nextId++;
+    data.id = this.nextId;
+    this.nextId++;
     this.users.push(data);
     return data;
   }
@@ -60,11 +60,14 @@ class InMemoryUserRepository {
   }
 
   async delete(userId) {
-    const user = this.users.findIndex((user) => user.id === userId);
+    const user = this.users.find((user) => user.id === userId);
     if (!user) {
       throw new Error("Usuário não encontrado", 404);
     }
-    this.users.splice(user, 1);
+
+    const userIndex = this.users.findIndex((user) => user.id === userId);
+
+    this.users.splice(userIndex, 1);
   }
 }
 
