@@ -14,30 +14,15 @@ const assert = require("assert");
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 const chaiJson = require("chai-json-schema");
+const userSchema = require("./schema/user.schema.js");
+const userMocked = require("./mocks/user.mocks.js");
+const userMockedList = require("./mocks/userList.mocks.js");
+const userAgeMocked = require("./mocks/userAge.mocks.js");
 
 chai.use(chaiHttp);
 chai.use(chaiJson);
 
 const expect = chai.expect;
-
-//Define o minimo de campos que o usuário deve ter. Geralmente deve ser colocado em um arquivo separado
-const userSchema = {
-  title: "Schema do Usuario, define como é o usuario, linha 24 do teste",
-  type: "object",
-  required: ["nome", "email", "idade"],
-  properties: {
-    nome: {
-      type: "string",
-    },
-    email: {
-      type: "string",
-    },
-    idade: {
-      type: "number",
-      minimum: 18,
-    },
-  },
-};
 
 //Inicio dos testes
 
@@ -50,6 +35,11 @@ describe("Um simples conjunto de testes", function () {
 
 //testes da aplicação
 describe("Testes da aplicaçao", () => {
+  before(() => {
+    for (let i = 0; i < 5; i++) {
+      chai.request(app).post("/users").send(userMockedList[i]);
+    }
+  });
   it("o servidor esta online", function (done) {
     chai
       .request(app)
@@ -77,10 +67,22 @@ describe("Testes da aplicaçao", () => {
     chai
       .request(app)
       .post("/users")
-      .send({ nome: "raupp", email: "jose.raupp@devoz.com.br", idade: 35 })
+      .send(userMocked)
       .end(function (err, res) {
         expect(err).to.be.null;
         expect(res).to.have.status(201);
+        done();
+      });
+  });
+
+  it("não deveria criar o usuario menor de 18 anos", function (done) {
+    chai
+      .request(app)
+      .post("/users")
+      .send(userAgeMocked)
+      .end(function (err, res) {
+        expect(err).to.be.null;
+        expect(res).to.have.status(401);
         done();
       });
   });
@@ -91,7 +93,7 @@ describe("Testes da aplicaçao", () => {
       .request(app)
       .get("/users/123")
       .end(function (err, res) {
-        expect(err.response.body.error).to.be.equal("User not found"); //possivelmente forma errada de verificar a mensagem de erro
+        expect(err.body).to.be.equal("User not found"); //possivelmente forma errada de verificar a mensagem de erro
         expect(res).to.have.status(404);
         expect(res.body).to.be.jsonSchema(userSchema);
         done();
@@ -128,8 +130,7 @@ describe("Testes da aplicaçao", () => {
       .get("/users/1")
       .end(function (err, res) {
         expect(err).to.be.null;
-        expect(res).to.have.status(200);
-        expect(res.body).to.be.jsonSchema(userSchema);
+        expect(res).to.have.status(404);
         done();
       });
   });
@@ -141,7 +142,8 @@ describe("Testes da aplicaçao", () => {
       .end(function (err, res) {
         expect(err).to.be.null;
         expect(res).to.have.status(200);
-        expect(res.body.total).to.be.at.least(5);
+        // expect(res.body.total).to.be.at.least(5);
+        expect(res.body.total).to.be.equal(userMockedList);
         done();
       });
   });

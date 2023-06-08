@@ -11,6 +11,7 @@ const Koa = require("koa");
 const bodyparser = require("koa-bodyparser");
 const Router = require("koa-router");
 const userRouter = require("./routes/user.routes");
+// const errorHandler = require("../src/errors/handleError");
 const koa = new Koa();
 var router = new Router();
 
@@ -22,6 +23,7 @@ router.get("/", async (ctx) => {
 koa.use(bodyparser());
 koa.use(router.routes()).use(router.allowedMethods());
 koa.use(userRouter.routes()).use(userRouter.allowedMethods());
+// koa.use(errorHandler());
 
 const server = koa.listen(PORT, () => {
   console.log(`Rodando em localhost:${PORT}`);

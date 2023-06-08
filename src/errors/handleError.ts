@@ -1,11 +1,12 @@
-const AppError = require("./appError");
+const appError = require("./appError");
 
-export const handleError = async (error: Error, ctx: any) => {
-  if (error instanceof AppError) {
-    // return ctx.status(error.statusCode).json({
-    //   message: error.message,
-    // });
+const errorHandler = (err, res) => {
+  console.log(err.message);
+  if (err instanceof appError) {
+    return res.status(err.statusCode).json(err.message);
   }
-  console.log(error.message);
-  return ctx.status(500).json({ message: "Internal server error!" });
+
+  res.status(500).json({ message: "Internal Server Error." });
 };
+
+module.exports = errorHandler;

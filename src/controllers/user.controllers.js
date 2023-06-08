@@ -7,13 +7,15 @@ class UserController {
   static async createUser(ctx) {
     const data = ctx.request.body;
     const [status, user] = await service.createUser(data);
+    ctx.status = status;
+    ctx.body = user;
 
-    if (!user) {
-      ctx.throw(401);
-    } else {
-      ctx.status = status;
-      ctx.body = user;
-    }
+    // if (!user) {
+    //   ctx.throw(401);
+    // } else {
+    //   ctx.status = status;
+    //   ctx.body = user;
+    // }
   }
 
   static async readAll(ctx) {
@@ -25,8 +27,6 @@ class UserController {
   static async readOne(ctx) {
     const userId = +ctx.params.id;
     const [status, user] = await service.readUser(userId);
-    console.log(status, user);
-
     ctx.status = status;
     ctx.body = user;
   }
@@ -51,9 +51,9 @@ class UserController {
     if (!user) {
       ctx.throw(404, "User not found");
     } else {
-      const [status, message] = await service.deleteUser(userId);
+      const [status, user] = await service.deleteUser(userId);
       ctx.status = status;
-      ctx.body = { message: message };
+      ctx.body = user;
     }
   }
 }
