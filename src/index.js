@@ -7,8 +7,8 @@
 // todas as configuraçoes devem ser passadas via environment variables
 const PORT = process.env.PORT || 3000;
 
-const Koa = require("koa");
-const Router = require("koa-router");
+import Koa from "koa";
+import Router from "koa-router";
 
 const koa = new Koa();
 var router = new Router();
@@ -27,8 +27,6 @@ router.get("/users", async (ctx) => {
 
 koa.use(router.routes()).use(router.allowedMethods());
 
-const server = koa.listen(PORT, () => {
+koa.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-module.exports = server;
