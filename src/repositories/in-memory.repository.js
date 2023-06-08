@@ -1,43 +1,41 @@
-import { AppError } from "src/errors/appError.ts";
-
-export class inMemoryUserRepository {
+class InMemoryUserRepository {
   users = [];
   nextId = 1;
 
   async create(data) {
     const keys = Object.keys(data);
 
-    const findUser = this._database.find((user) => user.email === data.email);
+    const findUser = this.users.find((user) => user.email === data.email);
     if (findUser) {
-      throw new AppError("Email já cadastrado");
+      throw new Error("Email já cadastrado");
     } else if (data.idade < 18) {
-      throw new AppError("Usuário não pode ser menor de 18 anos");
+      throw new Error("Usuário não pode ser menor de 18 anos");
     } else if (
       !keys.includes("nome") ||
       !keys.includes("email") ||
       !keys.includes("idade")
     ) {
-      throw new AppError("Nome, email e idade são campos obrigatórios");
+      throw new Error("Nome, email e idade são campos obrigatórios");
     }
 
     data.id = this._nextId;
     this._nextId++;
-    this._database.push(data);
+    this.users.push(data);
     return data;
   }
 
   async readAll() {
     return {
-      total: this._database.length,
-      count: this._database.length,
-      rows: this._database,
+      total: this.users.length,
+      count: this.users.length,
+      rows: this.users,
     };
   }
 
   async readOne(userId) {
-    const user = this._database.find((user) => user.id === userId);
+    const user = this.users.find((user) => user.id === userId);
     if (!user) {
-      throw new AppError("Usuário não encontrado", 404);
+      throw new Error("Usuário não encontrado", 404);
     }
     return user;
   }
@@ -45,27 +43,29 @@ export class inMemoryUserRepository {
   async update(userId, data) {
     const keys = Object.keys(data);
     if (keys.includes("id")) {
-      throw new AppError("Você não pode atualizar o campo id");
+      throw new Error("Você não pode atualizar o campo id");
     }
 
-    const user = this._database.find((user) => user.id === userId);
+    const user = this.users.find((user) => user.id === userId);
     if (!user) {
-      throw new AppError("Usuário não encontrado", 404);
+      throw new Error("Usuário não encontrado", 404);
     }
-    const userIndex = this._database.findIndex((user) => user.id === userId);
+    const userIndex = this.users.findIndex((user) => user.id === userId);
     const updatedUser = {
       ...user,
       ...data,
     };
-    this._database.splice(userIndex, 1, updatedUser);
+    this.users.splice(userIndex, 1, updatedUser);
     return updatedUser;
   }
 
   async delete(userId) {
-    const user = this._database.findIndex((user) => user.id === userId);
+    const user = this.users.findIndex((user) => user.id === userId);
     if (!user) {
-      throw new AppError("Usuário não encontrado", 404);
+      throw new Error("Usuário não encontrado", 404);
     }
-    this._database.splice(user, 1);
+    this.users.splice(user, 1);
   }
 }
+
+module.exports = InMemoryUserRepository;
