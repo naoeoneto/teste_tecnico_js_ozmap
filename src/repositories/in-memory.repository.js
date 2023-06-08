@@ -35,7 +35,7 @@ class InMemoryUserRepository {
   async readOne(userId) {
     const user = this.users.find((user) => user.id === userId);
     if (!user) {
-      throw new Error("Usuário não encontrado", 404);
+      throw new Error("User not found", 404);
     }
     return user;
   }
@@ -48,7 +48,7 @@ class InMemoryUserRepository {
 
     const user = this.users.find((user) => user.id === userId);
     if (!user) {
-      throw new Error("Usuário não encontrado", 404);
+      throw new Error("User not found", 404);
     }
     const userIndex = this.users.findIndex((user) => user.id === userId);
     const updatedUser = {
@@ -62,7 +62,7 @@ class InMemoryUserRepository {
   async delete(userId) {
     const user = this.users.find((user) => user.id === userId);
     if (!user) {
-      throw new Error("Usuário não encontrado", 404);
+      throw new Error("User not found", 404);
     }
 
     const userIndex = this.users.findIndex((user) => user.id === userId);
