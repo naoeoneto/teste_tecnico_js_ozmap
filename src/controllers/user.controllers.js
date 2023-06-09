@@ -27,8 +27,13 @@ class UserController {
   static async readOne(ctx) {
     const userId = +ctx.params.id;
     const [status, user] = await service.readUser(userId);
-    ctx.status = status;
-    ctx.body = user;
+    if (!user) {
+      console.log("entrou");
+      ctx.throw(404, "User not found");
+    } else {
+      ctx.status = status;
+      ctx.body = user;
+    }
   }
 
   static async updateUser(ctx) {
