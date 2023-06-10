@@ -1,12 +1,17 @@
-const appError = require("./appError");
+async function errorHandler(ctx, next) {
+  return next().catch((err) => {
+    const { statusCode, message } = err;
 
-const errorHandler = (err, res) => {
-  // console.log(err.message);
-  if (err instanceof appError) {
-    return res.status(err.statusCode).json(err.message);
-  }
+    ctx.type = "json";
+    ctx.status = statusCode || 500;
+    ctx.body = {
+      status: "error",
+      message: message,
+    };
+    // console.log("err", ctx.body);
 
-  res.status(500).json({ message: "Internal Server Error." });
-};
+    ctx.app.emit("error", err, ctx);
+  });
+}
 
 module.exports = errorHandler;

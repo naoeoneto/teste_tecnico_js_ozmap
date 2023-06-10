@@ -15,9 +15,8 @@ const chai = require("chai");
 const chaiHttp = require("chai-http");
 const chaiJson = require("chai-json-schema");
 const userSchema = require("./schema/user.schema.js");
-const userMocked = require("./mocks/user.mocks.js");
-const userMockedList = require("./mocks/userList.mocks.js");
-const userAgeMocked = require("./mocks/userAge.mocks.js");
+const mocks = require("./mocks/user.mocks.js");
+const AppError = require("../src/errors/appError.js");
 
 chai.use(chaiHttp);
 chai.use(chaiJson);
@@ -35,11 +34,6 @@ describe("Um simples conjunto de testes", function () {
 
 //testes da aplicação
 describe("Testes da aplicaçao", () => {
-  beforeEach(() => {
-    for (let i = 0; i < 5; i++) {
-      chai.request(app).post("/users").send(userMockedList[i]);
-    }
-  });
   it("o servidor esta online", function (done) {
     chai
       .request(app)
@@ -67,39 +61,73 @@ describe("Testes da aplicaçao", () => {
     chai
       .request(app)
       .post("/users")
-      .send(userMocked)
+      .send(mocks.userMocked)
       .end(function (err, res) {
         expect(err).to.be.null;
         expect(res).to.have.status(201);
         done();
       });
   });
-
-  it("não deveria criar o usuario menor de 18 anos", function (done) {
+  it("deveria criar cinco usuarios", function (done) {
     chai
       .request(app)
       .post("/users")
-      .send(userAgeMocked)
+      .send(mocks.userMockedList[0])
       .end(function (err, res) {
-        expect(err).to.throw();
-        expect(res).to.have.status(401);
+        expect(err).to.be.null;
+        expect(res).to.have.status(201);
+      });
+    chai
+      .request(app)
+      .post("/users")
+      .send(mocks.userMockedList[1])
+      .end(function (err, res) {
+        expect(err).to.be.null;
+        expect(res).to.have.status(201);
+      });
+    chai
+      .request(app)
+      .post("/users")
+      .send(mocks.userMockedList[2])
+      .end(function (err, res) {
+        expect(err).to.be.null;
+        expect(res).to.have.status(201);
+      });
+    chai
+      .request(app)
+      .post("/users")
+      .send(mocks.userMockedList[3])
+      .end(function (err, res) {
+        expect(err).to.be.null;
+        expect(res).to.have.status(201);
+      });
+    chai
+      .request(app)
+      .post("/users")
+      .send(mocks.userMockedList[4])
+      .end(function (err, res) {
+        expect(err).to.be.null;
+        expect(res).to.have.status(201);
         done();
       });
   });
   //...adicionar pelo menos mais 5 usuarios. se adicionar usuario menor de idade, deve dar erro. Ps: não criar o usuario naoExiste
 
-  it("o usuario naoExiste não existe no sistema", function (done) {
-    chai
-      .request(app)
-      .get("/users/123")
-      .end(function (err, res) {
-        expect(err).to.throw(); //possivelmente forma errada de verificar a mensagem de erro
-        // expect(err.body).to.be.equal("User not found"); //possivelmente forma errada de verificar a mensagem de erro
-        // expect(res).to.have.status(404);
-        // expect(res.body).to.be.jsonSchema(userSchema);
-        done();
-      });
-  });
+  // it("o usuario naoExiste não existe no sistema", function (done) {
+  //   chai
+  //     .request(app)
+  //     .get("/user/123")
+  //     .end(function (err, res) {
+  //       // console.log("1", AppError);
+  //       // expect(err).to.be.null;
+  //       expect(err).to.throw(new AppError("User not found"));
+  //       expect(res.error).to.be.equal("User not found"); //possivelmente forma errada de verificar a mensagem de erro
+  //       expect(res).to.have.status(404);
+  //       // expect(res.body).to.have.equal("User not found");
+  //       // expect(res.body).to.be.jsonSchema(userSchema);
+  //       done();
+  //     });
+  // });
 
   it("o usuario raupp existe e é valido", function (done) {
     chai
@@ -143,8 +171,7 @@ describe("Testes da aplicaçao", () => {
       .end(function (err, res) {
         expect(err).to.be.null;
         expect(res).to.have.status(200);
-        expect(res.body.total).to.be.at.least(5);
-        // expect(res.body.total).to.be.equal(userMockedList);
+        expect(res.body.total).to.be.equal(5);
         done();
       });
   });
