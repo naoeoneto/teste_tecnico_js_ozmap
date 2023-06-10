@@ -30,21 +30,21 @@ router.get("/", async (ctx) => {
 //     ctx.app.emit("error", err, ctx);
 //   }
 // });
-// koa.use(async (ctx, next) => {
-//   try {
-//     await next();
-//   } catch (err) {
-//     // will only respond with JSON
-//     ctx.status = err.statusCode || err.status || 500;
-//     ctx.body = {
-//       message: err.message,
-//     };
-//   }
-// });
+koa.use(async (ctx, next) => {
+  try {
+    await next();
+  } catch (err) {
+    // will only respond with JSON
+    ctx.status = err.statusCode || err.status || 500;
+    ctx.body = {
+      message: err.message,
+    };
+  }
+});
 
 koa.use(errorHandler);
 koa.on("error", (err, ctx) => {
-  console.log(err);
+  console.log("oi", err);
 });
 
 koa.use(bodyparser());

@@ -4,12 +4,6 @@ const userMocked = {
   idade: 35,
 };
 
-const userMockedUnderAge = {
-  nome: "Fernando",
-  email: "fernando@devoz.com.br",
-  idade: 17,
-};
-
 const userMockedList = [
   {
     nome: "Antonio",
@@ -38,4 +32,37 @@ const userMockedList = [
   },
 ];
 
-module.exports = { userMocked, userMockedUnderAge, userMockedList };
+const userMockedUpdate = {
+  idade: 33,
+};
+
+const userMockedUnderAge = {
+  nome: "Fernando",
+  email: "fernando@devoz.com.br",
+  idade: 17,
+};
+
+const userMockedWrongEmail = {
+  nome: "José",
+  email: "jose.raupp@devoz.com.br",
+  idade: 31,
+};
+
+const userMockedMissingData = {
+  email: "missing@mail.com",
+  idade: 23,
+};
+
+const userMockedUpdateId = {
+  id: 35,
+};
+
+module.exports = {
+  userMocked,
+  userMockedList,
+  userMockedUpdate,
+  userMockedUnderAge,
+  userMockedWrongEmail,
+  userMockedMissingData,
+  userMockedUpdateId,
+};

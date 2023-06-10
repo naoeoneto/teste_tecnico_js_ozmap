@@ -111,23 +111,77 @@ describe("Testes da aplicaçao", () => {
         done();
       });
   });
-  //...adicionar pelo menos mais 5 usuarios. se adicionar usuario menor de idade, deve dar erro. Ps: não criar o usuario naoExiste
 
-  // it("o usuario naoExiste não existe no sistema", function (done) {
-  //   chai
-  //     .request(app)
-  //     .get("/user/123")
-  //     .end(function (err, res) {
-  //       // console.log("1", AppError);
-  //       // expect(err).to.be.null;
-  //       expect(err).to.throw(new AppError("User not found"));
-  //       expect(res.error).to.be.equal("User not found"); //possivelmente forma errada de verificar a mensagem de erro
-  //       expect(res).to.have.status(404);
-  //       // expect(res.body).to.have.equal("User not found");
-  //       // expect(res.body).to.be.jsonSchema(userSchema);
-  //       done();
-  //     });
-  // });
+  it("não cria usuário menor de 18 anos", function (done) {
+    chai
+      .request(app)
+      .post("/users")
+      .send(mocks.userMockedUnderAge)
+      .end(function (err, res) {
+        expect(err).to.be.null;
+        expect(res).to.have.status(400);
+        done();
+      });
+  });
+
+  it("não cria usuário com email cadastrado", function (done) {
+    chai
+      .request(app)
+      .post("/users")
+      .send(mocks.userMockedWrongEmail)
+      .end(function (err, res) {
+        expect(err).to.be.null;
+        expect(res).to.have.status(400);
+        done();
+      });
+  });
+
+  it("não cria usuário sem todas as informações necessárias", function (done) {
+    chai
+      .request(app)
+      .post("/users")
+      .send(mocks.userMockedMissingData)
+      .end(function (err, res) {
+        expect(err).to.be.null;
+        expect(res).to.have.status(400);
+        done();
+      });
+  });
+
+  it("não cria usuário sem nenhuma informação", function (done) {
+    chai
+      .request(app)
+      .post("/users")
+      .send({})
+      .end(function (err, res) {
+        expect(err).to.be.null;
+        expect(res).to.have.status(400);
+        done();
+      });
+  });
+
+  it("não lista usuário inexistente no sistema", function (done) {
+    chai
+      .request(app)
+      .get("/users/123")
+      .end(function (err, res) {
+        expect(err).to.be.null;
+        expect(res).to.have.status(404);
+        done();
+      });
+    //   .request(app)
+    //   .get("/user/123")
+    //   .end(function (err, res) {
+    //     // console.log("1", AppError);
+    //     // expect(err).to.be.null;
+    //     expect(err).to.throw(new AppError("User not found"));
+    //     expect(res.error).to.be.equal("User not found"); //possivelmente forma errada de verificar a mensagem de erro
+    //     expect(res).to.have.status(404);
+    //     // expect(res.body).to.have.equal("User not found");
+    //     // expect(res.body).to.be.jsonSchema(userSchema);
+    //     done();
+    //   });
+  });
 
   it("o usuario raupp existe e é valido", function (done) {
     chai
@@ -137,6 +191,43 @@ describe("Testes da aplicaçao", () => {
         expect(err).to.be.null;
         expect(res).to.have.status(200);
         expect(res.body).to.be.jsonSchema(userSchema);
+        done();
+      });
+  });
+
+  it("deveria atualizar o usuario raupp", function (done) {
+    chai
+      .request(app)
+      .patch("/users/1")
+      .send(mocks.userMockedUpdate)
+      .end(function (err, res) {
+        expect(err).to.be.null;
+        expect(res).to.have.status(200);
+        expect(res.body).to.be.jsonSchema(userSchema);
+        done();
+      });
+  });
+
+  it("não permite que usuário atualize id", function (done) {
+    chai
+      .request(app)
+      .patch("/users/1")
+      .send(mocks.userMockedUpdateId)
+      .end(function (err, res) {
+        expect(err).to.be.null;
+        expect(res).to.have.status(400);
+        done();
+      });
+  });
+
+  it("não atualiza usuário inexistente no sistema", function (done) {
+    chai
+      .request(app)
+      .patch("/users/123")
+      .send(mocks.userMockedUpdate)
+      .end(function (err, res) {
+        expect(err).to.be.null;
+        expect(res).to.have.status(404);
         done();
       });
   });
