@@ -1,0 +1,10 @@
+<h1 class="">Tabela de Contatos OZmap</h1>
+<ul class="list-group">
+  <% users.forEach(user => {%>
+  <li class="list-group-item">
+    <p><%= user.nome %></p>
+    <p><%= user.email %></p>
+    <p><%= user.idade %></p>
+  </li>
+  <% }) %>
+</ul>

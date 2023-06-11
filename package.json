@@ -23,6 +23,7 @@
   "dependencies": {
     "koa": "^2.13.0",
     "koa-bodyparser": "^4.4.0",
+    "koa-ejs": "^4.3.0",
     "koa-router": "^9.4.0",
     "koa2-swagger-ui": "^5.8.0",
     "swagger-koa": "^2.1.0",
