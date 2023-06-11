@@ -1,6 +1,6 @@
 const AppError = require("../errors/appError");
 
-class HtmlRepository {
+class InMemoryUserRepository {
   users = [];
   nextId = 1;
 
@@ -35,10 +35,10 @@ class HtmlRepository {
   }
 
   async readOne(userId) {
-    const user = this.users.find((user) => user.id === userId);
-    if (!user) {
-      throw new AppError("User not found", 404);
-    }
+    // const user = this.users.find((user) => user.id === userId);
+    // if (!user) {
+    //   throw new AppError("User not found", 404);
+    // }
     return user;
   }
 
@@ -48,10 +48,10 @@ class HtmlRepository {
       throw new AppError("You can't update id field");
     }
 
-    const user = this.users.find((user) => user.id === userId);
-    if (!user) {
-      throw new AppError("User not found", 404);
-    }
+    // const user = this.users.find((user) => user.id === userId);
+    // if (!user) {
+    //   throw new AppError("User not found", 404);
+    // }
 
     const userIndex = this.users.findIndex((user) => user.id === userId);
     const updatedUser = {
@@ -63,10 +63,10 @@ class HtmlRepository {
   }
 
   async delete(userId) {
-    const user = this.users.find((user) => user.id === userId);
-    if (!user) {
-      throw new AppError("User not found");
-    }
+    // const user = this.users.find((user) => user.id === userId);
+    // if (!user) {
+    //   throw new AppError("User not found");
+    // }
 
     const userIndex = this.users.findIndex((user) => user.id === userId);
     this.users.splice(userIndex, 1);
@@ -74,4 +74,4 @@ class HtmlRepository {
   }
 }
 
-module.exports = HtmlRepository;
+module.exports = InMemoryUserRepository;

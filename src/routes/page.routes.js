@@ -5,18 +5,10 @@ const pageController = require("../controllers/page.controllers");
 
 const pageRouter = new Router();
 
-pageRouter.get(
-  "/app",
-  pageController.index
-  // async (ctx) => {
-  //   await ctx.render("index", {
-  //     users: users,
-  //   });
-  // }
-);
+pageRouter.get("/index", pageController.index);
 
-pageRouter.get("/add", async (ctx) => {
-  await ctx.render("addUser");
-});
+pageRouter.get("/register", pageController.addPage);
+
+pageRouter.post("/register", pageController.register);
 
 module.exports = pageRouter;
