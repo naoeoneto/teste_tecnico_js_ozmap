@@ -23,7 +23,13 @@
   "dependencies": {
     "koa": "^2.13.0",
     "koa-bodyparser": "^4.4.0",
-    "koa-router": "^9.4.0"
+    "koa-ejs": "^4.3.0",
+    "koa-router": "^9.4.0",
+    "koa2-swagger-ui": "^5.8.0",
+    "swagger-koa": "^2.1.0",
+    "swagger2": "^4.0.3",
+    "swagger2-koa": "^4.0.0",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
