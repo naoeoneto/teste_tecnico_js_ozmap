@@ -1,7 +1,15 @@
 const Router = require("koa-router");
 const UserController = require("../controllers/user.controllers");
+const swagger = require("koa2-swagger-ui");
+const yamljs = require("yamljs");
 
 const userRouter = new Router();
+const spec = yamljs.load("./openapi.yaml");
+
+userRouter.get(
+  "/swagger",
+  swagger.koaSwagger({ routePrefix: false, swaggerOptions: { spec } })
+);
 
 userRouter.post("/users", UserController.createUser);
 
