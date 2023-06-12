@@ -1,0 +1,227 @@
+openapi: 3.0.3
+info:
+  title: OZmap API 1.0
+  description: API developed as part of the technical test from developer Antonio Neto to the job opportunity as FullStack Developer at OZmap.
+contact:
+  email: abdpneto@gmail.com
+version: 1.0.0
+tags:
+  name: users
+  description: Users registered at database
+paths:
+  /users:
+    post:
+      tags:
+        - users
+      summary: Create a new user
+      description: Create a new user at database
+      requestBody:
+        description: Create a new user at database
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/userRequest"
+        required: true
+      responses:
+        '200':
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userResponse'          
+        '400':
+          description: Email already in use
+        '400':
+          description: User's age can't be under 18
+        '400':
+          description: Name, email and age are required fields
+        '500':
+          description: Internal server error
+    get:
+      tags:
+        - users
+      summary: List all users
+      description: List all users registered at database
+      responses:
+        '200':
+          description: Users listed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/users'          
+        '500':
+          description: Internal server error
+  /users/{id}:
+    get:
+      tags:
+        - users
+      summary: List an user
+      description: List an user by id
+      parameters:
+        - name: id
+          in: path
+          description: The user's id
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: User listed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userResponse'          
+        '404':
+          description: User not found
+        '500':
+          description: Internal server error
+    patch:  
+      tags:
+        - users
+      summary: Update an user
+      description: Update user's informations
+      parameters:
+        - name: id
+          in: path
+          description: The user's id
+          required: true
+          schema:
+            type: number
+      requestBody:
+        description: Update user's informations
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/userUpdateRequest"
+        required: false
+      responses:
+        '200':
+          description: User updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userUpdateResponse'          
+        '401':
+          description: You can't update id field
+        '404':
+          description: User not found
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - users
+      summary: Delete an user
+      description: Delete an user's register
+      parameters:
+        - name: id
+          in: path
+          description: The user's id
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: User deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userResponse'
+        '404':
+          description: User not found
+        '500':
+          description: Internal server error
+components:
+  schemas:
+    userRequest:
+      type: object
+      required:
+        - nome
+        - email
+        - idade
+      properties:
+        nome:
+          type: string
+          example: Felipe
+        email:
+          type: string
+          example: felipe@mail.com
+        idade:
+          type: integer
+          format: int64
+          example: 25
+    userResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        nome:
+          type: string
+          example: Felipe
+        email:
+          type: string
+          example: felipe@mail.com
+        idade:
+          type: integer
+          format: int64
+          example: 25
+    users:
+      type: object
+      properties:
+        total:
+          type: integer
+          format: int64
+          example: 1
+        count:
+          type: integer
+          format: int64
+          example: 1
+        rows:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int64
+                example: 1
+              nome:
+                type: string
+                example: Felipe
+              email:
+                type: string
+                example: felipe@mail.com
+              idade:
+                type: integer
+                format: int64
+                example: 25
+    userUpdateRequest:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: Felipe Felipe
+        email:
+          type: string
+          example: felipefelipe@mail.com
+        idade:
+          type: integer
+          example: 30
+    userUpdateResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        nome:
+          type: string
+          example: Felipe Felipe
+        email:
+          type: string
+          example: felipefelipe@mail.com
+        idade:
+          type: integer
+          format: int64
+          example: 30

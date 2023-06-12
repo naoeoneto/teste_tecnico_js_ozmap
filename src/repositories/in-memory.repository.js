@@ -1,6 +1,6 @@
 const AppError = require("../errors/appError");
 
-class HtmlRepository {
+class InMemoryUserRepository {
   users = [];
   nextId = 1;
 
@@ -74,4 +74,4 @@ class HtmlRepository {
   }
 }
 
-module.exports = HtmlRepository;
+module.exports = InMemoryUserRepository;
