@@ -27,8 +27,6 @@
     "koa-router": "^9.4.0",
     "koa2-swagger-ui": "^5.8.0",
     "swagger-koa": "^2.1.0",
-    "swagger2": "^4.0.3",
-    "swagger2-koa": "^4.0.0",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {

@@ -7,8 +7,6 @@ class UserController {
   static async createUser(ctx) {
     const data = ctx.request.body;
     const user = await service.createUser(data);
-    // ctx.status = status;
-    // ctx.body = user;
 
     if (!user) {
       ctx.throw(400);
@@ -25,19 +23,9 @@ class UserController {
   }
 
   static async readOne(ctx) {
-    // try {
-    //   await Promise.reject("Something went wrong");
-    // } catch (err) {
-    //   ctx.status = err.status || 500;
-    //   ctx.body = err.message;
-    //   ctx.app.emit("error", err, ctx);
-    // }
-    // const userId = +ctx.params.id;
     const user = await service.readUser(+ctx.params.id);
     if (!user) {
-      // ctx.throw(404);
-      // ctx.status = 404;
-      // ctx.body = "User not found";
+      ctx.throw(404);
     } else {
       ctx.status = 200;
       ctx.body = user;
@@ -45,7 +33,6 @@ class UserController {
   }
 
   static async updateUser(ctx) {
-    // const userId = +ctx.params.id;
     const data = ctx.request.body;
     const user = await service.updateUser(+ctx.params.id, data);
 
@@ -58,7 +45,6 @@ class UserController {
   }
 
   static async deleteUser(ctx) {
-    // const userId = +ctx.params.id;
     const user = await service.readUser(+ctx.params.id);
 
     if (!user) {

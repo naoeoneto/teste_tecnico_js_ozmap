@@ -169,18 +169,6 @@ describe("Testes da aplicaçao", () => {
         expect(res).to.have.status(404);
         done();
       });
-    //   .request(app)
-    //   .get("/user/123")
-    //   .end(function (err, res) {
-    //     // console.log("1", AppError);
-    //     // expect(err).to.be.null;
-    //     expect(err).to.throw(new AppError("User not found"));
-    //     expect(res.error).to.be.equal("User not found"); //possivelmente forma errada de verificar a mensagem de erro
-    //     expect(res).to.have.status(404);
-    //     // expect(res.body).to.have.equal("User not found");
-    //     // expect(res.body).to.be.jsonSchema(userSchema);
-    //     done();
-    //   });
   });
 
   it("o usuario raupp existe e é valido", function (done) {

@@ -1,8 +1,7 @@
-const HtmlRepository = require("../repositories/in-memory.repository");
-// const InMemoryUserRepository = require("../repositories/in-memory.repository");
+const InMemoryUserRepository = require("../repositories/in-memory.repository");
 const UserService = require("../services/user.services");
 
-const service = new UserService(new HtmlRepository());
+const service = new UserService(new InMemoryUserRepository());
 
 class pageController {
   static async index(ctx) {

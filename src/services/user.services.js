@@ -1,6 +1,6 @@
 class UserService {
   constructor(repository) {
-    this.userRep = repository; // DependencyInjection
+    this.userRep = repository;
   }
 
   async createUser(data) {
